@@ -9,10 +9,27 @@ class Admin(models.Model):
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now_add=True)
     objects=models.Manager()
-    
+
+class Staffs(models.Model):
+    id=models.AutoField(primary_key=True)
+    admin=models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+    address=models.TextField()
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now_add=True)
+    objects=models.Manager()
+
 class Courses(models.Model):
     id=models.AutoField(primary_key=True)
     course_name=models.CharField(max_length=255)
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now_add=True)
+    objects=models.Manager()
+
+class Subjects(models.Model):
+    id=models.AutoField(primary_key=True)
+    subject_name=models.CharField(max_length=255)
+    course_id=models.ForeignKey(Courses,on_delete=models.CASCADE,default=1)
+    staff_id=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now_add=True)
     objects=models.Manager()
@@ -26,6 +43,14 @@ class Students(models.Model):
     course_id=models.ForeignKey(Courses,on_delete=models.DO_NOTHING)
     session_start_year=models.DateField()
     session_end_year=models.DateField()
+    created_at=models.DateTimeField(auto_now_add=True)
+    updated_at=models.DateTimeField(auto_now_add=True)
+    objects = models.Manager()
+
+class Attendance(models.Model):
+    id=models.AutoField(primary_key=True)
+    subject_id=models.ForeignKey(Subjects,on_delete=models.DO_NOTHING)
+    attendance_date=models.DateTimeField(auto_now_add=True)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
