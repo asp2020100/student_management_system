@@ -1,21 +1,19 @@
 from django.db import models
 
-# Create your models here.
-class CustomUser(AbstractUser):
-    user_type_data=((1,"HOD"),(2,"Staff"),(3,"Student"))
-    user_type=models.CharField(default=1,choices=user_type_data,max_length=10)
 
+# Create your models here.
 
 class AdminHOD(models.Model):
     id=models.AutoField(primary_key=True)
-    admin=models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+    name = models.CharField(max_length=100,null=False)
+    email = models.EmailField(unique=True, null=False)
+    password = models.CharField(max_length=100,null=False)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now_add=True)
     objects=models.Manager()
 
 class Staffs(models.Model):
     id=models.AutoField(primary_key=True)
-    admin=models.OneToOneField(CustomUser,on_delete=models.CASCADE)
     address=models.TextField()
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now_add=True)
@@ -32,14 +30,12 @@ class Subjects(models.Model):
     id=models.AutoField(primary_key=True)
     subject_name=models.CharField(max_length=255)
     course_id=models.ForeignKey(Courses,on_delete=models.CASCADE,default=1)
-    staff_id=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now_add=True)
     objects=models.Manager()
 
 class Students(models.Model):
     id=models.AutoField(primary_key=True)
-    admin=models.OneToOneField(CustomUser,on_delete=models.CASCADE)
     gender=models.CharField(max_length=255)
     profile_pic=models.FileField()
     address=models.TextField()
@@ -124,4 +120,3 @@ class NotificationStaffs(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
-
